@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -56,26 +57,22 @@ border-left:5px solid #0284c7;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="max-w-4xl mx-auto p-6">
 
-<!-- HEADER -->
-
-<div class="mb-6">
-<h1 class="text-3xl font-bold flex items-center gap-2">
+<h1 class="text-3xl font-bold mb-2 flex items-center gap-2">
 <i data-lucide="search-check"></i>
-SILAT NEGORO Sistem Informasi Tera/Tera Ulang Bojonegoro
+Sistem Informasi Tera
 </h1>
 
-<p class="text-gray-600">
-UPTD Metrologi Legal Dinas Perdagangan, Koperasi dan Usaha Mikro
+<p class="text-gray-600 mb-6">
+UPTD Metrologi Legal Dinas Perdagangan
 </p>
-</div>
 
-<!-- SEARCH -->
 
 <div class="bg-white p-6 rounded-lg shadow mb-6">
 
@@ -100,7 +97,6 @@ Cari
 
 </div>
 
-<!-- HASIL -->
 
 <div id="results-container" class="space-y-4 mb-8">
 
@@ -114,7 +110,6 @@ Cari
 
 </div>
 
-<!-- TABLE DATA -->
 
 <div class="bg-white p-6 rounded-lg shadow">
 
@@ -154,71 +149,46 @@ Data Semua Layanan
 
 </div>
 
-<!-- FORM BUTTON -->
-
-<div class="mt-8">
-
-<button
-id="form-button"
-class="button-primary w-full"
->
-
-Ajukan Permohonan Tera / Tera Ulang
-
-</button>
-
 </div>
 
-</div>
 
 <script>
 
 let allData=[];
 
-/* GANTI SPREADSHEET ID */
+const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?output=csv";
 
-const sheetURL =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv";
-
-/* LOAD DATA */
 
 async function loadSpreadsheetData(){
 
-try{
-
 const response=await fetch(sheetURL);
 
-const text=await response.text();
+const csv=await response.text();
 
-const json=JSON.parse(text.substr(47).slice(0,-2));
+const rows=csv.split("\n").slice(1);
 
-const rows=json.table.rows;
+allData=rows.map(row=>{
 
-allData=rows.map(r=>({
+const col=row.split(",");
 
-nomor_layanan:r.c[0]?.v||"",
-tanggal_diterima:r.c[1]?.v||"",
-nama_pemilik:r.c[2]?.v||"",
-lokasi:r.c[3]?.v||"",
-jenis_layanan:r.c[4]?.v||"",
-status:r.c[5]?.v||"",
-keterangan:r.c[6]?.v||""
+return{
 
-}));
+nomor_layanan:col[0]||"",
+tanggal_diterima:col[1]||"",
+nama_pemilik:col[2]||"",
+lokasi:col[3]||"",
+jenis_layanan:col[4]||"",
+status:col[5]||"",
+keterangan:col[6]||""
+
+};
+
+});
 
 renderTable();
 
 }
 
-catch(e){
-
-console.error(e);
-
-}
-
-}
-
-/* RENDER TABLE */
 
 function renderTable(){
 
@@ -226,8 +196,7 @@ const tbody=document.getElementById("data-table-body");
 
 if(allData.length===0){
 
-tbody.innerHTML=
-"<tr><td colspan='4' class='text-center p-4'>Tidak ada data</td></tr>";
+tbody.innerHTML="<tr><td colspan='4' class='text-center p-4'>Tidak ada data</td></tr>";
 
 return;
 
@@ -237,17 +206,11 @@ tbody.innerHTML=allData.map(item=>`
 
 <tr class="border-b hover:bg-blue-50">
 
-<td class="p-2 font-semibold">
-${item.nomor_layanan}
-</td>
+<td class="p-2 font-semibold">${item.nomor_layanan}</td>
 
-<td class="p-2">
-${item.nama_pemilik}
-</td>
+<td class="p-2">${item.nama_pemilik}</td>
 
-<td class="p-2">
-${item.jenis_layanan}
-</td>
+<td class="p-2">${item.jenis_layanan}</td>
 
 <td class="p-2">
 
@@ -267,78 +230,36 @@ lucide.createIcons();
 
 }
 
-/* SEARCH */
 
 document.getElementById("search-btn").addEventListener("click",()=>{
 
-const value=
-document.getElementById("search-input")
-.value
-.toLowerCase();
+const value=document.getElementById("search-input").value.toLowerCase();
 
-const container=
-document.getElementById("results-container");
+const container=document.getElementById("results-container");
 
-const found=
-allData.filter(d=>
-d.nomor_layanan
-.toLowerCase()
-.includes(value)
-);
+const found=allData.filter(d=>d.nomor_layanan.toLowerCase().includes(value));
 
 if(found.length===0){
 
-container.innerHTML=
-"<p class='text-center text-gray-500'>Data tidak ditemukan</p>";
+container.innerHTML="<p class='text-center text-gray-500'>Data tidak ditemukan</p>";
 
 return;
 
 }
 
-container.innerHTML=
-found.map(item=>`
+container.innerHTML=found.map(item=>`
 
 <div class="card-result">
 
-<div class="grid md:grid-cols-2 gap-4">
+<p><b>Nomor:</b> ${item.nomor_layanan}</p>
 
-<div>
-<p class="text-sm text-gray-500">Nomor</p>
-<p class="font-bold">${item.nomor_layanan}</p>
-</div>
+<p><b>Nama:</b> ${item.nama_pemilik}</p>
 
-<div>
-<p class="text-sm text-gray-500">Tanggal</p>
-<p>${item.tanggal_diterima}</p>
-</div>
+<p><b>Lokasi:</b> ${item.lokasi}</p>
 
-<div>
-<p class="text-sm text-gray-500">Nama</p>
-<p>${item.nama_pemilik}</p>
-</div>
+<p><b>Jenis:</b> ${item.jenis_layanan}</p>
 
-<div>
-<p class="text-sm text-gray-500">Lokasi</p>
-<p>${item.lokasi}</p>
-</div>
-
-<div>
-<p class="text-sm text-gray-500">Jenis</p>
-<p>${item.jenis_layanan}</p>
-</div>
-
-<div>
-<p class="text-sm text-gray-500">Status</p>
-
-<span class="status-badge status-${item.status.toLowerCase().replace(/\s+/g,'-')}">
-
-${item.status}
-
-</span>
-
-</div>
-
-</div>
+<p><b>Status:</b> ${item.status}</p>
 
 </div>
 
@@ -346,32 +267,6 @@ ${item.status}
 
 });
 
-/* ENTER SEARCH */
-
-document
-.getElementById("search-input")
-.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-
-document.getElementById("search-btn").click();
-
-}
-
-});
-
-/* BUTTON FORM */
-
-document.getElementById("form-button").addEventListener("click",()=>{
-
-window.open(
-"https://forms.gle/CSYjoiVNAVi9w9P97",
-"_blank"
-);
-
-});
-
-/* INIT */
 
 loadSpreadsheetData();
 
