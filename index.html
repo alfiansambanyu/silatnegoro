@@ -3,199 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cek Status Layanan Tera</title>
+
+<title>Form Input Layanan Tera</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-}
-
 body{
+font-family:Arial, Helvetica, sans-serif;
+background:#f2f5f9;
 margin:0;
-font-family:Segoe UI,Roboto,Arial;
-background:linear-gradient(135deg,#5aa9e6,#3b82c4);
-min-height:100vh;
-color:#333;
+padding:40px;
 }
 
-/* HEADER */
-
-header{
-text-align:center;
-padding:25px 10px;
-color:white;
-}
-
-header img{
-height:70px;
-margin-bottom:10px;
-}
-
-header h1{
-margin:2px;
-font-size:20px;
-}
-
-header p{
-margin-top:5px;
-opacity:0.9;
-font-size:13px;
-}
-
-/* CARD */
-
-.card{
-background:white;
-max-width:520px;
+.container{
+max-width:500px;
 margin:auto;
-border-radius:12px;
-padding:25px;
-box-shadow:0 10px 25px rgba(0,0,0,0.15);
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* TITLE */
+h2{
+text-align:center;
+margin-bottom:20px;
+}
 
-.title{
-font-size:18px;
+label{
 font-weight:bold;
-margin-bottom:10px;
-border-bottom:3px solid #3b82c4;
-padding-bottom:6px;
 }
 
-/* INPUT */
-
-input{
+input,select{
 width:100%;
-padding:13px;
-font-size:16px;
-border-radius:8px;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
 border:1px solid #ccc;
-margin-top:10px;
+border-radius:6px;
 }
-
-/* BUTTON */
 
 button{
 width:100%;
-padding:13px;
-margin-top:12px;
+padding:12px;
 border:none;
-border-radius:8px;
-background:#3b82c4;
+background:#2d89ef;
 color:white;
 font-size:16px;
-font-weight:bold;
+border-radius:6px;
 cursor:pointer;
-transition:0.3s;
 }
 
 button:hover{
-background:#2a6da8;
+background:#1b5fbf;
 }
 
-/* RESULT */
-
-#hasil{
-margin-top:20px;
-display:none;
-}
-
-/* INFO ROW */
-
-.row{
-margin-bottom:14px;
-}
-
-.label{
-font-size:12px;
-color:#666;
-}
-
-.value{
-font-size:15px;
-font-weight:bold;
-margin-top:3px;
-}
-
-/* STATUS BADGE */
-
-.status{
-display:inline-block;
-padding:6px 12px;
-border-radius:20px;
-font-size:13px;
-font-weight:bold;
-}
-
-.Selesai{
-background:#d4edda;
-color:#1e7e34;
-}
-
-.Diproses{
-background:#fff3cd;
-color:#856404;
-}
-
-.Ditolak{
-background:#f8d7da;
-color:#721c24;
-}
-
-/* LOADING */
-
-.loading{
+#status{
 text-align:center;
-padding:15px;
-}
-
-.spinner{
-width:30px;
-height:30px;
-border:4px solid #ddd;
-border-top:4px solid #3b82c4;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
-}
-
-/* FORM BUTTON */
-
-.form-btn{
-margin-top:20px;
-text-align:center;
-}
-
-.form-btn a{
-display:block;
-background:#2e7d32;
-color:white;
-padding:14px;
-border-radius:8px;
-text-decoration:none;
+margin-top:15px;
 font-weight:bold;
-transition:0.3s;
-}
-
-.form-btn a:hover{
-background:#1f5e24;
-}
-
-/* FOOTER */
-
-footer{
-text-align:center;
-color:white;
-font-size:12px;
-margin-top:20px;
-padding-bottom:20px;
 }
 
 </style>
@@ -203,186 +68,55 @@ padding-bottom:20px;
 
 <body>
 
-<header>
+<div class="container">
 
-<img src="Logo-Kabupaten-Bojonegoro.png">
+<h2>Form Pengajuan Layanan</h2>
 
-<h1>DINAS PERDAGANGAN</h1>
-<h1>UPTD METROLOGI LEGAL</h1>
+<label>Nama Pemilik</label>
+<input type="text" id="nama" required>
 
-<p>Sistem Informasi Layanan Tera / Tera Ulang</p>
+<label>Nomor UTTP</label>
+<input type="text" id="uttp" required>
 
-</header>
+<label>Jenis Layanan</label>
+<select id="layanan">
+<option value="">Pilih Layanan</option>
+<option value="Tera">Tera</option>
+<option value="Tera Ulang">Tera Ulang</option>
+<option value="Pengaduan">Pengaduan</option>
+</select>
 
-<div class="card">
+<button onclick="kirimData()">Kirim Data</button>
 
-<div class="title">Cek Status Layanan</div>
-
-<input id="nomor" placeholder="Masukkan Nomor Layanan">
-
-<button onclick="cekLayanan()">Cari Status</button>
-
-<div id="hasil"></div>
-
-</div>
-
-<div class="card form-btn">
-
-<a href="https://forms.gle/xixjsguVMUgHeTwZ7">
-Ajukan Permohonan Tera / Tera Ulang
-</a>
+<p id="status"></p>
 
 </div>
-
-<footer>
-© 2026 Pemerintah Kabupaten Bojonegoro
-</footer>
 
 <script>
 
-function parseCSV(text){
+function kirimData(){
 
-const rows=[]
-let row=[]
-let current=""
-let insideQuotes=false
+const url="https://script.googleusercontent.com/macros/echo?user_content_key=AY5xjrSR2IOrnmHE_wSjbPAh6R6hCHNZF3ti6jEXmN5LDjfTo-OIqJbCuaKOyaj-aSvtf2l5vttIO_yOzYehzUymdiECxxtS_RSTXDElR3kVT34bPrchJiriGpMKxqFOCl90aztqwqlubRX72rwUTyTfb9F4jwe-4nRr1aFfKILIS_X90Kk-FejhHBkb6B67tAOV7tu8MqgB0vOmVvTqQU_-rOiA2o9lUI7trPmCeCJMNzeBZ7Jzf4cGRsNoxhZR0_YoZ6Cro4Jv3QfSSQcKy__2urGEMTPHZgE-ENYZivEk&lib=Mx6-EdlwqnGxSbCwNLXC5btGdcM6ZsAap";
 
-for(let i=0;i<text.length;i++){
+const data={
+nama:document.getElementById("nama").value,
+uttp:document.getElementById("uttp").value,
+layanan:document.getElementById("layanan").value
+};
 
-const char=text[i]
-const next=text[i+1]
-
-if(char=='"' && insideQuotes && next=='"'){
-current+='"'
-i++
-}
-
-else if(char=='"'){
-insideQuotes=!insideQuotes
-}
-
-else if(char=="," && !insideQuotes){
-row.push(current)
-current=""
-}
-
-else if(char=="\n" && !insideQuotes){
-row.push(current)
-rows.push(row)
-row=[]
-current=""
-}
-
-else{
-current+=char
-}
-
-}
-
-row.push(current)
-rows.push(row)
-
-return rows
-
-}
-
-async function cekLayanan(){
-
-const nomor=document.getElementById("nomor").value.trim().toLowerCase()
-
-const hasil=document.getElementById("hasil")
-
-if(!nomor){
-alert("Nomor layanan harus diisi")
-return
-}
-
-hasil.style.display="block"
-
-hasil.innerHTML=`
-<div class="loading">
-<div class="spinner"></div>
-<p>Mencari data...</p>
-</div>
-`
-
-const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv"
-
-const res=await fetch(url)
-
-const text=await res.text()
-
-const data=parseCSV(text)
-
-let ditemukan=false
-
-for(let i=1;i<data.length;i++){
-
-let nomorSheet=(data[i][0]||"").trim().toLowerCase()
-
-if(nomorSheet===nomor){
-
-hasil.innerHTML=`
-
-<div class="row">
-<div class="label">Nomor Layanan</div>
-<div class="value">${data[i][0]}</div>
-</div>
-
-<div class="row">
-<div class="label">Jenis Layanan</div>
-<div class="value">${data[i][2]}</div>
-</div>
-
-<div class="row">
-<div class="label">Status</div>
-<div class="value">
-<span class="status ${data[i][4]}">${data[i][4]}</span>
-</div>
-</div>
-
-<div class="row">
-<div class="label">Tanggal</div>
-<div class="value">${data[i][1]}</div>
-</div>
-
-<div class="row">
-<div class="label">Lokasi</div>
-<div class="value">${data[i][3]}</div>
-</div>
-
-<div class="row">
-<div class="label">Keterangan</div>
-<div class="value">${data[i][5]}</div>
-</div>
-
-`
-
-ditemukan=true
-
-break
-
-}
-
-}
-
-if(!ditemukan){
-
-hasil.innerHTML="<b>Nomor layanan tidak ditemukan</b>"
-
-}
-
-}
-
-document.getElementById("nomor").addEventListener("keydown",function(e){
-
-if(e.key==="Enter"){
-
-cekLayanan()
-
-}
-
+fetch(url,{
+method:"POST",
+body:JSON.stringify(data)
 })
+.then(res=>res.json())
+.then(response=>{
+document.getElementById("status").innerHTML="✅ Data berhasil dikirim";
+})
+.catch(error=>{
+document.getElementById("status").innerHTML="❌ Gagal mengirim data";
+});
+
+}
 
 </script>
 
