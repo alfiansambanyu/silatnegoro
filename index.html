@@ -1,276 +1,263 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Sistem Informasi Tera</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<title>Cek Progres Layanan Publik</title>
 
 <style>
-
-body{
-font-family:Arial;
-background:linear-gradient(135deg,#e0f2fe,#bae6fd);
-min-height:100vh;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  color: #333;
 }
 
-.status-badge{
-padding:6px 12px;
-border-radius:6px;
-font-size:14px;
-font-weight:600;
+/* HEADER */
+header {
+  background: #509dd4;
+  color: #fff;
+  padding: 16px 10px;
+  text-align: center;
 }
 
-.status-diterima{background:#dbeafe;color:#1e40af;}
-.status-proses{background:#fef3c7;color:#92400e;}
-.status-selesai{background:#dcfce7;color:#166534;}
-.status-ditolak{background:#fee2e2;color:#991b1b;}
-
-.button-primary{
-background:#0284c7;
-color:white;
-padding:10px 20px;
-border-radius:8px;
+header img {
+  height: 60px;
+  margin-bottom: 6px;
 }
 
-.button-primary:hover{
-background:#0369a1;
+header h1 {
+  font-size: 18px;
+  margin: 4px 0;
 }
 
-.input-field{
-border:2px solid #bae6fd;
-padding:10px;
-border-radius:8px;
-width:100%;
+header p {
+  font-size: 12px;
+  margin: 0;
+  opacity: 0.9;
 }
 
-.card-result{
-background:white;
-border-radius:10px;
-padding:20px;
-border-left:5px solid #0284c7;
+/* CONTAINER */
+.container {
+  margin: 12px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
+h2 {
+  font-size: 16px;
+  border-bottom: 2px solid #509dd4;
+  padding-bottom: 6px;
+}
+
+/* INPUT */
+input, button {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background: #509dd4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* HASIL */
+#hasil {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: none;
+}
+
+.item {
+  margin-bottom: 14px;
+}
+
+.label {
+  font-size: 12px;
+  color: #555;
+}
+
+.value {
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  font-weight: bold;
+}
+
+.item:last-child .value {
+  font-weight: normal;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.status.Selesai { color: green; }
+.status.Diproses { color: orange; }
+.status.Ditolak { color: red; }
+
+/* TOMBOL GOOGLE FORM */
+.form-section {
+  margin: 16px 12px 0;
+}
+
+.form-section a {
+  display: block;
+  text-align: center;
+  background: #2e7d32;
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-section a:hover {
+  background: #256628;
+}
+
+/* FOOTER */
+footer {
+  margin: 18px 0;
+  text-align: center;
+  font-size: 11px;
+  color: #555;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .container {
+    padding: 14px 12px;
+  }
+  .value {
+    font-size: 14px;
+  }
+}
 </style>
-
 </head>
 
 <body>
 
-<div class="max-w-4xl mx-auto p-6">
+<header>
+  <img src="Logo-Kabupaten-Bojonegoro.png" alt="Logo Instansi">
+  <h1>DINAS PERDAGANGAN, KOPERASI DAN USAHA MIKRO</h1>
+  <h1>UPTD METROLOGI LEGAL</h1>
+  <p>Sistem Informasi Layanan Tera/Tera Ulang</p>
+</header>
 
-<h1 class="text-3xl font-bold mb-2 flex items-center gap-2">
-<i data-lucide="search-check"></i>
-Sistem Informasi Tera
-</h1>
-
-<p class="text-gray-600 mb-6">
-UPTD Metrologi Legal Dinas Perdagangan
-</p>
-
-
-<div class="bg-white p-6 rounded-lg shadow mb-6">
-
-<h2 class="font-bold mb-3">Cek Status Layanan</h2>
-
-<div class="flex gap-2">
-
-<input
-id="search-input"
-class="input-field"
-placeholder="Masukkan nomor layanan"
-/>
-
-<button
-id="search-btn"
-class="button-primary"
->
-Cari
-</button>
-
+<div class="container">
+  <h2>Cek Status Layanan</h2>
+  <input id="nomor" placeholder="Masukkan Nomor Layanan">
+  <button onclick="cekLayanan()">Cari</button>
+  <div id="hasil"></div>
 </div>
 
+<!-- TOMBOL GOOGLE FORM -->
+<div class="form-section">
+  <a href="https://forms.gle/xixjsguVMUgHeTwZ7">
+    Ajukan Permohonan Layanan Tera/Tera Ulang Disini!
+  </a>
 </div>
 
-
-<div id="results-container" class="space-y-4 mb-8">
-
-<div class="text-center text-gray-500">
-
-<i data-lucide="inbox" style="width:40px;height:40px;margin:auto;"></i>
-
-<p>Masukkan nomor layanan untuk melihat status</p>
-
-</div>
-
-</div>
-
-
-<div class="bg-white p-6 rounded-lg shadow">
-
-<h2 class="font-bold mb-4 flex items-center gap-2">
-<i data-lucide="table"></i>
-Data Semua Layanan
-</h2>
-
-<div class="overflow-x-auto">
-
-<table class="w-full text-sm">
-
-<thead>
-
-<tr class="border-b bg-blue-50">
-
-<th class="text-left p-2">Nomor Layanan</th>
-<th class="text-left p-2">Nama Pemilik</th>
-<th class="text-left p-2">Jenis Layanan</th>
-<th class="text-left p-2">Status</th>
-
-</tr>
-
-</thead>
-
-<tbody id="data-table-body">
-
-<tr>
-<td colspan="4" class="text-center p-4">Loading data...</td>
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
+<footer>
+  © 2026 Pemerintah Daerah Kabupaten Bojonegoro • Informasi Publik
+</footer>
 
 <script>
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let current = "";
+  let insideQuotes = false;
 
-let allData=[];
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
 
-const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?output=csv";
+    if (char === '"' && insideQuotes && next === '"') {
+      current += '"';
+      i++;
+    } else if (char === '"') {
+      insideQuotes = !insideQuotes;
+    } else if (char === "," && !insideQuotes) {
+      row.push(current);
+      current = "";
+    } else if (char === "\n" && !insideQuotes) {
+      row.push(current);
+      rows.push(row);
+      row = [];
+      current = "";
+    } else {
+      current += char;
+    }
+  }
 
-
-function loadSpreadsheetData(){
-
-Papa.parse(sheetURL,{
-
-download:true,
-header:true,
-
-complete:function(results){
-
-allData=results.data.filter(row=>row.nomor_layanan);
-
-renderTable();
-
+  row.push(current);
+  rows.push(row);
+  return rows;
 }
 
+async function cekLayanan() {
+  const nomor = document.getElementById("nomor").value.trim();
+  const hasil = document.getElementById("hasil");
+
+  if (!nomor) {
+    alert("Nomor layanan wajib diisi");
+    return;
+  }
+
+  const res = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv");
+  const text = await res.text();
+  const data = parseCSV(text);
+
+  let ditemukan = false;
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === nomor) {
+      hasil.style.display = "block";
+      hasil.innerHTML = `
+        <div class="item"><div class="label">Nomor Layanan</div><div class="value">${data[i][0]}</div></div>
+        <div class="item"><div class="label">Jenis Layanan</div><div class="value">${data[i][4]}</div></div>
+        <div class="item"><div class="label">Status</div><div class="value status ${data[i][5]}">${data[i][4]}</div></div>
+        <div class="item"><div class="label">Tanggal Diterima</div><div class="value">${data[i][1]}</div></div>
+        <div class="item"><div class="label">Lokasi</div><div class="value">${data[i][3]}</div></div>
+        <div class="item"><div class="label">Keterangan</div><div class="value">${data[i][6]}</div></div>
+      `;
+      ditemukan = true;
+      break;
+    }
+  }
+
+  if (!ditemukan) {
+    hasil.style.display = "block";
+    hasil.innerHTML = "<b>Nomor layanan tidak ditemukan.</b>";
+  }
+}
+
+/* ENTER = CARI */
+document.getElementById("nomor").addEventListener("keydown", e => {
+  if (e.key === "Enter") cekLayanan();
 });
-
-}
-
-
-function renderTable(){
-
-const tbody=document.getElementById("data-table-body");
-
-if(allData.length===0){
-
-tbody.innerHTML="<tr><td colspan='4' class='text-center p-4'>Tidak ada data</td></tr>";
-return;
-
-}
-
-tbody.innerHTML=allData.map(item=>`
-
-<tr class="border-b hover:bg-blue-50">
-
-<td class="p-2 font-semibold">${item.nomor_layanan || ""}</td>
-
-<td class="p-2">${item.nama_pemilik || ""}</td>
-
-<td class="p-2">${item.jenis_layanan || ""}</td>
-
-<td class="p-2">
-
-<span class="status-badge status-${(item.status||"").toLowerCase().replace(/\s+/g,'-')}">
-
-${item.status || ""}
-
-</span>
-
-</td>
-
-</tr>
-
-`).join("");
-
-lucide.createIcons();
-
-}
-
-
-document.getElementById("search-btn").addEventListener("click",()=>{
-
-const keyword=document.getElementById("search-input").value.toLowerCase();
-
-const container=document.getElementById("results-container");
-
-const found=allData.filter(item=>
-(item.nomor_layanan||"").toLowerCase().includes(keyword)
-);
-
-if(found.length===0){
-
-container.innerHTML="<p class='text-center text-gray-500'>Data tidak ditemukan</p>";
-return;
-
-}
-
-container.innerHTML=found.map(item=>`
-
-<div class="card-result">
-
-<p><b>Nomor Layanan :</b> ${item.nomor_layanan}</p>
-<p><b>Nama Pemilik :</b> ${item.nama_pemilik}</p>
-<p><b>Lokasi :</b> ${item.lokasi}</p>
-<p><b>Jenis Layanan :</b> ${item.jenis_layanan}</p>
-<p><b>Status :</b> ${item.status}</p>
-
-</div>
-
-`).join("");
-
-});
-
-
-document.getElementById("search-input")
-.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-document.getElementById("search-btn").click();
-}
-
-});
-
-
-loadSpreadsheetData();
-
-lucide.createIcons();
-
 </script>
 
 </body>
 </html>
-```
