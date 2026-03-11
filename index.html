@@ -410,7 +410,7 @@ hasil.innerHTML=`
 </div>
 `
 
-const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv"
+const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv&t="+Date.now()
 
 const res=await fetch(url)
 const text=await res.text()
