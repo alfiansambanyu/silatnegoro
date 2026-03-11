@@ -25,7 +25,7 @@ padding:30px 10px;
 }
 
 header img{
-height:150px;
+height:110px;
 margin-bottom:10px;
 }
 
@@ -154,23 +154,15 @@ font-weight:bold;
 .selesai{background:#4cbb17}
 .perbaikan{background:#ff0800}
 
-/* ACTIVE ANIMATION */
+/* ANIMATION */
 
 .active{
 animation:pulse 1.4s infinite;
 }
 
-/* SELESAI TIDAK BOLEH BERDENYUT */
-
-.circle.selesai{
-animation:none !important;
-}
-
-/* ANIMATION */
-
 @keyframes pulse{
 0%{transform:scale(1)}
-50%{transform:scale(1.18)}
+50%{transform:scale(1.2)}
 100%{transform:scale(1)}
 }
 
@@ -278,14 +270,14 @@ let label3="Selesai"
 /* DITERIMA */
 
 if(status.includes("diterima")){
-progress="20%"
+progress="30%"
 s1+=" active"
 }
 
 /* DIPROSES */
 
 if(status.includes("diproses")){
-progress="60%"
+progress="65%"
 s2+=" active"
 }
 
@@ -293,6 +285,7 @@ s2+=" active"
 
 if(status.includes("selesai")){
 progress="100%"
+s3+=" active"
 }
 
 /* PERLU PERBAIKAN */
