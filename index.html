@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>SILAT NEGORO</title>
 
 <style>
@@ -115,7 +114,7 @@ top:30px;
 left:0;
 height:6px;
 background:#4cbb17;
-transition:0.5s;
+transition:0.4s;
 }
 
 .steps{
@@ -138,14 +137,14 @@ align-items:center;
 justify-content:center;
 margin:auto;
 font-size:26px;
-color:white;
 font-weight:bold;
+color:white;
 }
 
 .label-step{
 margin-top:8px;
-font-weight:bold;
 font-size:14px;
+font-weight:bold;
 }
 
 /* STATUS COLORS */
@@ -155,15 +154,23 @@ font-size:14px;
 .selesai{background:#4cbb17}
 .perbaikan{background:#ff0800}
 
-/* ACTIVE */
+/* ACTIVE ANIMATION */
 
 .active{
 animation:pulse 1.4s infinite;
 }
 
+/* SELESAI TIDAK BOLEH BERDENYUT */
+
+.circle.selesai{
+animation:none !important;
+}
+
+/* ANIMATION */
+
 @keyframes pulse{
 0%{transform:scale(1)}
-50%{transform:scale(1.2)}
+50%{transform:scale(1.18)}
 100%{transform:scale(1)}
 }
 
@@ -262,17 +269,16 @@ let s1="circle diterima"
 let s2="circle proses"
 let s3="circle selesai"
 
-let icon1="1"
-let icon2="2"
-let icon3="3"
+let icon1="📝"
+let icon2="⏳"
+let icon3="✔"
 
 let label3="Selesai"
 
 /* DITERIMA */
 
 if(status.includes("diterima")){
-progress="15%"
-icon1="⏳"
+progress="20%"
 s1+=" active"
 }
 
@@ -280,8 +286,6 @@ s1+=" active"
 
 if(status.includes("diproses")){
 progress="60%"
-icon1="✔"
-icon2="⏳"
 s2+=" active"
 }
 
@@ -289,17 +293,12 @@ s2+=" active"
 
 if(status.includes("selesai")){
 progress="100%"
-icon1="✔"
-icon2="✔"
-icon3="✔"
 }
 
 /* PERLU PERBAIKAN */
 
 if(status.includes("perbaikan")){
 progress="100%"
-icon1="✔"
-icon2="✔"
 icon3="⚠"
 s3="circle perbaikan active"
 label3="Perlu Perbaikan"
