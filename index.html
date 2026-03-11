@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SILAT NEGORO</title>
 
 <style>
@@ -16,6 +17,8 @@ min-height:100vh;
 color:#333;
 }
 
+/* HEADER */
+
 header{
 text-align:center;
 color:white;
@@ -27,11 +30,15 @@ height:110px;
 margin-bottom:10px;
 }
 
+/* CONTAINER */
+
 .container{
 max-width:900px;
 margin:auto;
 padding:10px;
 }
+
+/* CARD */
 
 .card{
 background:white;
@@ -86,66 +93,82 @@ font-weight:bold;
 margin-top:3px;
 }
 
-/* WORKFLOW */
+/* WORKFLOW TRACKING */
 
-.workflow{
+.tracking{
+margin:40px 0;
+position:relative;
+}
+
+.progress-line{
+position:absolute;
+top:25px;
+left:0;
+right:0;
+height:6px;
+background:#ddd;
+z-index:1;
+}
+
+.progress{
+position:absolute;
+top:25px;
+left:0;
+height:6px;
+background:#4cbb17;
+z-index:2;
+transition:0.5s;
+}
+
+.steps{
 display:flex;
-align-items:center;
-gap:14px;
-margin:30px 0;
-font-weight:bold;
-justify-content:flex-start;
+justify-content:space-between;
+position:relative;
+z-index:3;
 }
 
 .step{
-padding:14px 22px;
-border-radius:25px;
+text-align:center;
+width:33%;
+}
+
+.circle{
+width:50px;
+height:50px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+font-weight:bold;
+color:white;
 font-size:18px;
 }
 
-.arrow{
-font-size:28px;
+.label-step{
+margin-top:8px;
+font-size:14px;
 font-weight:bold;
 }
 
-/* COLORS */
+/* STATUS COLORS */
 
-.done{
-background:#4cbb17;
-color:white;
-}
+.diterima{background:#e6cff2;color:#000}
+.proses{background:#fffc00;color:#000}
+.selesai{background:#4cbb17}
+.perbaikan{background:#ff0800}
+
+/* ACTIVE ANIMATION */
 
 .active{
 animation:pulse 1.5s infinite;
 }
 
-.diterima{background:#e6cff2}
-.proses{background:#fffc00}
-.selesai{background:#4cbb17;color:white}
-.perlu_perbaikan{background:#ff0800;color:white}
-
-/* STATISTICS */
-
-.stats{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
-margin-top:20px;
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
 }
-
-.stat{
-padding:20px;
-border-radius:12px;
-text-align:center;
-font-weight:bold;
-}
-
-.stat h2{font-size:28px}
-
-.stat.diterima{background:#e6cff2}
-.stat.proses{background:#fffc00}
-.stat.selesai{background:#4cbb17;color:white}
-.stat.perlu_perbaikan{background:#ff0800;color:white}
 
 /* FORM BUTTON */
 
@@ -168,12 +191,6 @@ color:white;
 font-size:12px;
 margin-top:20px;
 padding-bottom:20px;
-}
-
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.15)}
-100%{transform:scale(1)}
 }
 
 </style>
@@ -207,38 +224,10 @@ padding-bottom:20px;
 </div>
 
 <div class="card form-btn">
+
 <a href="https://forms.gle/xixjsguVMUgHeTwZ7">
-Ajukan Permohonan Tera/Tera Ulang
+Ajukan Permohonan Tera/Tera Ulang!
 </a>
-</div>
-
-<div class="card">
-
-<div class="title">Statistik Layanan Bulan Ini</div>
-
-<div class="stats">
-
-<div class="stat diterima">
-<h2 id="sDiterima">0</h2>
-<p>Diterima</p>
-</div>
-
-<div class="stat proses">
-<h2 id="sProses">0</h2>
-<p>Diproses</p>
-</div>
-
-<div class="stat selesai">
-<h2 id="sSelesai">0</h2>
-<p>Selesai</p>
-</div>
-
-<div class="stat perbaikan">
-<h2 id="sPerbaikan">0</h2>
-<p>Butuh Perbaikan</p>
-</div>
-
-</div>
 
 </div>
 
@@ -264,51 +253,63 @@ document.getElementById("search").addEventListener("keypress",function(e){
 if(e.key==="Enter"){cekLayanan()}
 })
 
-/* WORKFLOW */
+/* WORKFLOW TRACKING */
 
 function workflow(status){
 
 status=status.toLowerCase()
 
-let s1="step diterima"
-let s2="step proses"
-let s3="step selesai"
+let progress="0%"
+let s1="circle diterima"
+let s2="circle proses"
+let s3="circle selesai"
+let label3="Selesai"
 
 if(status.includes("diterima")){
+progress="10%"
 s1+=" active"
 }
 
 if(status.includes("diproses")){
-s1+=" done"
+progress="55%"
+s1+=""
 s2+=" active"
 }
 
 if(status.includes("selesai")){
-s1+=" done"
-s2+=" done"
-s3+=" active"
+progress="100%"
 }
 
 if(status.includes("perbaikan")){
-s1+=" done"
-s2+=" done"
-s3="step perbaikan active"
+progress="100%"
+s3="circle perbaikan active"
+label3="Perlu Perbaikan"
 }
 
 return`
 
-<div class="workflow">
+<div class="tracking">
 
-<div class="${s1}">Diterima</div>
+<div class="progress-line"></div>
+<div class="progress" style="width:${progress}"></div>
 
-<div class="arrow">➜</div>
+<div class="steps">
 
-<div class="${s2}">Diproses</div>
+<div class="step">
+<div class="${s1}">1</div>
+<div class="label-step">Diterima</div>
+</div>
 
-<div class="arrow">➜</div>
+<div class="step">
+<div class="${s2}">2</div>
+<div class="label-step">Diproses</div>
+</div>
 
-<div class="${s3}">
-${status.includes("perbaikan")?"Perbaikan":"Selesai"}
+<div class="step">
+<div class="${s3}">3</div>
+<div class="label-step">${label3}</div>
+</div>
+
 </div>
 
 </div>
@@ -324,49 +325,6 @@ const res=await fetch(sheetURL)
 const text=await res.text()
 
 sheetData=parseCSV(text)
-
-hitungStatistik()
-
-}
-
-/* STATISTIK */
-
-function hitungStatistik(){
-
-let diterima=0
-let proses=0
-let selesai=0
-let perbaikan=0
-
-let now=new Date()
-
-for(let i=1;i<sheetData.length;i++){
-
-let t=sheetData[i][1]
-
-if(!t) continue
-
-let d=new Date(t)
-
-if(isNaN(d)) continue
-
-if(d.getMonth()==now.getMonth() && d.getFullYear()==now.getFullYear()){
-
-let status=(sheetData[i][6]||"").toLowerCase()
-
-if(status.includes("diterima")) diterima++
-if(status.includes("diproses")) proses++
-if(status.includes("selesai")) selesai++
-if(status.includes("perbaikan")) perbaikan++
-
-}
-
-}
-
-document.getElementById("sDiterima").innerText=diterima
-document.getElementById("sProses").innerText=proses
-document.getElementById("sSelesai").innerText=selesai
-document.getElementById("sPerbaikan").innerText=perbaikan
 
 }
 
