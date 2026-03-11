@@ -7,63 +7,86 @@
 
 <style>
 
-*{box-sizing:border-box;}
+/* =====================
+GLOBAL STYLE
+===================== */
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
 body{
-margin:0;
 font-family:Segoe UI,Roboto,Arial;
-background:linear-gradient(135deg,#5aa9e6,#3b82c4);
+background:linear-gradient(135deg,#4f8edc,#2a5fa4);
 min-height:100vh;
 color:#333;
 }
 
-/* HEADER */
+/* =====================
+HEADER
+===================== */
 
 header{
 text-align:center;
-padding:30px 10px;
 color:white;
+padding:30px 10px;
+animation:fadeDown 1s;
 }
 
 header img{
-height:130px;
+height:120px;
 margin-bottom:10px;
 }
 
 header h1{
-margin:3px;
 font-size:24px;
+margin:2px;
 }
 
 header p{
-margin:4px;
 font-size:16px;
 }
 
-/* CARD */
+/* =====================
+LAYOUT
+===================== */
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:10px;
+}
+
+/* =====================
+CARD
+===================== */
 
 .card{
 background:white;
-max-width:520px;
-margin:auto;
 border-radius:14px;
 padding:25px;
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
 margin-bottom:20px;
-animation:fadeUp 0.7s;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+animation:fadeUp .7s;
 }
 
-/* TITLE */
+/* =====================
+TITLE
+===================== */
 
 .title{
 font-size:20px;
 font-weight:bold;
-margin-bottom:10px;
 border-bottom:3px solid #3b82c4;
 padding-bottom:6px;
+margin-bottom:15px;
 }
 
-/* INPUT */
+/* =====================
+INPUT
+===================== */
 
 input{
 width:100%;
@@ -71,41 +94,44 @@ padding:14px;
 font-size:16px;
 border-radius:8px;
 border:1px solid #ccc;
-margin-top:10px;
 }
 
 input:focus{
-border-color:#3b82c4;
 outline:none;
+border-color:#3b82c4;
+box-shadow:0 0 5px rgba(0,0,0,0.2);
 }
 
-/* BUTTON */
+/* =====================
+STAT DASHBOARD
+===================== */
 
-button{
-width:100%;
-padding:14px;
-margin-top:12px;
-border:none;
-border-radius:8px;
-background:#3b82c4;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+margin-bottom:20px;
 }
 
-button:hover{
-background:#2a6da8;
+.stat{
+background:#f5f7fb;
+border-radius:10px;
+padding:15px;
+text-align:center;
 }
 
-/* RESULT */
-
-#hasil{
-margin-top:20px;
-display:none;
+.stat h2{
+font-size:28px;
+color:#3b82c4;
 }
 
-/* INFO ROW */
+.stat p{
+font-size:12px;
+}
+
+/* =====================
+RESULT
+===================== */
 
 .row{
 margin-bottom:12px;
@@ -113,19 +139,19 @@ margin-bottom:12px;
 
 .label{
 font-size:12px;
-color:#666;
+color:#777;
 }
 
 .value{
-font-size:15px;
 font-weight:bold;
 margin-top:3px;
 }
 
-/* STATUS BADGE */
+/* =====================
+STATUS BADGE
+===================== */
 
 .status{
-display:inline-block;
 padding:6px 12px;
 border-radius:20px;
 font-size:13px;
@@ -133,11 +159,13 @@ font-weight:bold;
 }
 
 .Diterima{background:#e6e0ff;color:#4b0082;}
-.Selesai{background:#d4edda;color:#1e7e34;}
 .Diproses{background:#fff3cd;color:#856404;}
+.Selesai{background:#d4edda;color:#1e7e34;}
 .PerluPerbaikan{background:#f8d7da;color:#721c24;}
 
-/* TRACKING */
+/* =====================
+TRACKING
+===================== */
 
 .tracking{
 display:flex;
@@ -149,7 +177,7 @@ position:relative;
 .tracking::before{
 content:'';
 position:absolute;
-top:20px;
+top:18px;
 left:0;
 right:0;
 height:4px;
@@ -165,8 +193,8 @@ z-index:1;
 }
 
 .circle{
-width:40px;
-height:40px;
+width:35px;
+height:35px;
 border-radius:50%;
 background:#ccc;
 margin:auto;
@@ -177,26 +205,18 @@ color:white;
 font-weight:bold;
 }
 
-.step.active .circle{
-background:#3b82c4;
-animation:pulse 1.5s infinite;
-}
-
-.step.done .circle{
-background:#28a745;
-}
-
-.step.error .circle{
-background:#dc3545;
-animation:shake 0.4s infinite alternate;
-}
+.step.done .circle{background:#28a745;}
+.step.active .circle{background:#3b82c4;animation:pulse 1.5s infinite;}
+.step.error .circle{background:#dc3545;animation:shake .4s infinite alternate;}
 
 .step p{
 font-size:12px;
-margin-top:6px;
+margin-top:5px;
 }
 
-/* LOADING */
+/* =====================
+LOADING
+===================== */
 
 .loading{
 text-align:center;
@@ -213,19 +233,18 @@ animation:spin 1s linear infinite;
 margin:auto;
 }
 
-/* FORM BUTTON */
-
-.form-btn{
-text-align:center;
-}
+/* =====================
+BUTTON
+===================== */
 
 .form-btn a{
 display:block;
 background:#2e7d32;
 color:white;
-padding:15px;
-border-radius:10px;
+padding:14px;
+border-radius:8px;
 text-decoration:none;
+text-align:center;
 font-weight:bold;
 }
 
@@ -233,7 +252,9 @@ font-weight:bold;
 background:#1f5e24;
 }
 
-/* FOOTER */
+/* =====================
+FOOTER
+===================== */
 
 footer{
 text-align:center;
@@ -243,7 +264,9 @@ margin-top:20px;
 padding-bottom:20px;
 }
 
-/* ANIMATIONS */
+/* =====================
+ANIMATIONS
+===================== */
 
 @keyframes spin{
 0%{transform:rotate(0deg)}
@@ -266,6 +289,11 @@ from{opacity:0;transform:translateY(20px)}
 to{opacity:1;transform:translateY(0)}
 }
 
+@keyframes fadeDown{
+from{opacity:0;transform:translateY(-20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
 </style>
 </head>
 
@@ -275,20 +303,44 @@ to{opacity:1;transform:translateY(0)}
 
 <img src="Logo-Kabupaten-Bojonegoro.png">
 
-<h1>UPTD METROLOGI LEGAL KABUPATEN BOJONEGORO</h1>
+<h1>UPTD METROLOGI LEGAL</h1>
+<h1>KABUPATEN BOJONEGORO</h1>
 
 <p><b>SILAT NEGORO</b></p>
-<p>(Sistem Informasi Layanan Tera/Tera Ulang)</p>
+<p>Sistem Informasi Layanan Tera/Tera Ulang</p>
 
 </header>
+
+<div class="container">
+
+<div class="card">
+
+<div class="stats">
+
+<div class="stat">
+<h2 id="total">0</h2>
+<p>Total Layanan</p>
+</div>
+
+<div class="stat">
+<h2 id="proses">0</h2>
+<p>Diproses</p>
+</div>
+
+<div class="stat">
+<h2 id="selesai">0</h2>
+<p>Selesai</p>
+</div>
+
+</div>
+
+</div>
 
 <div class="card">
 
 <div class="title">Cek Status Layanan</div>
 
-<input id="nomor" placeholder="Masukkan Nomor Layanan">
-
-<button onclick="cekLayanan()">Cari Status</button>
+<input id="search" placeholder="Ketik Nomor Layanan...">
 
 <div id="hasil"></div>
 
@@ -302,59 +354,36 @@ Ajukan Permohonan Tera/Tera Ulang
 
 </div>
 
+</div>
+
 <footer>
 © 2026 Dinas Perdagangan, Koperasi dan Usaha Mikro Kabupaten Bojonegoro
 </footer>
 
 <script>
 
+/* =====================
+GOOGLE SHEET URL
+===================== */
+
+const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv&t="+Date.now()
+
+/* =====================
+CSV PARSER
+===================== */
+
 function parseCSV(text){
 
-const rows=[]
-let row=[]
-let current=""
-let insideQuotes=false
-
-for(let i=0;i<text.length;i++){
-
-const char=text[i]
-const next=text[i+1]
-
-if(char=='"' && insideQuotes && next=='"'){
-current+='"'
-i++
-}
-
-else if(char=='"'){
-insideQuotes=!insideQuotes
-}
-
-else if(char=="," && !insideQuotes){
-row.push(current)
-current=""
-}
-
-else if(char=="\n" && !insideQuotes){
-row.push(current)
-rows.push(row)
-row=[]
-current=""
-}
-
-else{
-current+=char
-}
-
-}
-
-row.push(current)
-rows.push(row)
-
+const rows=text.split("\n").map(r=>r.split(","))
 return rows
 
 }
 
-function buatTracking(status){
+/* =====================
+TRACKING UI
+===================== */
+
+function tracking(status){
 
 status=status.toLowerCase()
 
@@ -365,7 +394,7 @@ if(status.includes("diproses")){s1="done";s2="active"}
 if(status.includes("selesai")){s1="done";s2="done";s3="active"}
 if(status.includes("perbaikan")){s1="done";s2="done";s3="error"}
 
-return `
+return`
 
 <div class="tracking">
 
@@ -381,7 +410,7 @@ return `
 
 <div class="step ${s3}">
 <div class="circle">3</div>
-<p>${status.includes("perbaikan") ? "Perbaikan" : "Selesai"}</p>
+<p>${status.includes("perbaikan")?"Perbaikan":"Selesai"}</p>
 </div>
 
 </div>
@@ -390,53 +419,71 @@ return `
 
 }
 
-async function cekLayanan(){
+/* =====================
+LOAD DATA
+===================== */
 
-const nomor=document.getElementById("nomor").value.trim().toLowerCase()
+async function loadData(){
 
-const hasil=document.getElementById("hasil")
-
-if(!nomor){
-alert("Nomor layanan harus diisi")
-return
-}
-
-hasil.style.display="block"
-
-hasil.innerHTML=`
-<div class="loading">
-<div class="spinner"></div>
-<p>Mencari data...</p>
-</div>
-`
-
-const url="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv&t="+Date.now()
-
-const res=await fetch(url)
+const res=await fetch(sheetURL)
 const text=await res.text()
 const data=parseCSV(text)
 
-let ditemukan=false
+let total=data.length-1
+let proses=0
+let selesai=0
 
 for(let i=1;i<data.length;i++){
 
-let nomorSheet=(data[i][0]||"").toLowerCase()
+let status=(data[i][6]||"").toLowerCase()
 
-if(nomorSheet.includes(nomor)){
+if(status.includes("diproses")) proses++
+if(status.includes("selesai")) selesai++
 
-let status=data[i][6]
+}
+
+document.getElementById("total").innerText=total
+document.getElementById("proses").innerText=proses
+document.getElementById("selesai").innerText=selesai
+
+return data
+
+}
+
+/* =====================
+SEARCH SYSTEM
+===================== */
+
+let sheetData=[]
+
+document.getElementById("search").addEventListener("input",function(){
+
+const val=this.value.toLowerCase()
+
+if(val.length<3){
+document.getElementById("hasil").innerHTML=""
+return
+}
+
+for(let i=1;i<sheetData.length;i++){
+
+let nomor=(sheetData[i][0]||"").toLowerCase()
+
+if(nomor.includes(val)){
+
+let status=sheetData[i][6]
 let statusClass=status.replace(/\s/g,'')
 
-hasil.innerHTML=`
+document.getElementById("hasil").innerHTML=`
 
 <div class="row">
 <div class="label">Nomor Layanan</div>
-<div class="value">${data[i][0]}</div>
+<div class="value">${sheetData[i][0]}</div>
 </div>
 
 <div class="row">
 <div class="label">Jenis Layanan</div>
-<div class="value">${data[i][5]}</div>
+<div class="value">${sheetData[i][5]}</div>
 </div>
 
 <div class="row">
@@ -446,48 +493,44 @@ hasil.innerHTML=`
 </div>
 </div>
 
-${buatTracking(status)}
+${tracking(status)}
 
 <div class="row">
 <div class="label">Jadwal Pengujian</div>
-<div class="value">${data[i][2]}</div>
-</div>
-
-<div class="row">
-<div class="label">Tanggal Diterima</div>
-<div class="value">${data[i][1]}</div>
+<div class="value">${sheetData[i][2]}</div>
 </div>
 
 <div class="row">
 <div class="label">Lokasi</div>
-<div class="value">${data[i][4]}</div>
+<div class="value">${sheetData[i][4]}</div>
 </div>
 
 <div class="row">
 <div class="label">Keterangan</div>
-<div class="value">${data[i][7]}</div>
+<div class="value">${sheetData[i][7]}</div>
 </div>
 
 `
 
-ditemukan=true
 break
 
 }
 
 }
 
-if(!ditemukan){
-hasil.innerHTML="<b>Nomor layanan tidak ditemukan</b>"
-}
-
-}
-
-document.getElementById("nomor").addEventListener("keydown",function(e){
-if(e.key==="Enter"){
-cekLayanan()
-}
 })
+
+/* =====================
+INIT
+===================== */
+
+async function init(){
+
+sheetData=await loadData()
+
+}
+
+init()
 
 </script>
 
