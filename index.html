@@ -20,7 +20,6 @@ min-height:100vh;
 color:#333;
 }
 
-  
 /* HEADER */
 
 header{
@@ -124,6 +123,7 @@ border-radius:4px;
 transition:0.4s;
 max-width:calc(100% - 50px);
 }
+
 .steps{
 display:flex;
 justify-content:space-between;
@@ -210,7 +210,8 @@ font-weight:bold;
 font-size:16px;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
-  .form-btn a:hover{
+
+.form-btn a:hover{
 background:#d61f00;
 }
 
@@ -230,14 +231,10 @@ padding-bottom:15px;
 <body>
 
 <header>
-
 <img src="Logo-Kabupaten-Bojonegoro.png">
-
 <h2>UPTD METROLOGI LEGAL KABUPATEN BOJONEGORO</h2>
-
 <p><b>SILAT NEGORO</b></p>
 <p>Sistem Informasi Layanan Tera/Tera Ulang</p>
-
 </header>
 
 <div class="container">
@@ -247,7 +244,6 @@ padding-bottom:15px;
 <div class="title">Cek Status Layanan</div>
 
 <input id="search" placeholder="Masukkan Nomor Layanan">
-
 <button onclick="cekLayanan()">Cari Status</button>
 
 <div id="hasil"></div>
@@ -255,11 +251,9 @@ padding-bottom:15px;
 </div>
 
 <div class="card form-btn">
-
 <a href="https://forms.gle/xixjsguVMUgHeTwZ7">
 Ajukan Permohonan Tera/Tera Ulang
 </a>
-
 </div>
 
 </div>
@@ -284,7 +278,7 @@ if(e.key==="Enter"){cekLayanan()}
 
 function workflow(status){
 
-status=status.toLowerCase()
+status = (status || "").toLowerCase()
 
 let progress="0%"
 
@@ -307,27 +301,19 @@ if(status.includes("masuk") || status.includes("diterima")){
 progress="0%"
 s1+=" active"
 }
-
-/* VERIFIKASI */
-if(status.includes("verifikasi") || status.includes("pemeriksaan")){
+else if(status.includes("verifikasi") || status.includes("pemeriksaan")){
 progress="25%"
 s2+=" active"
 }
-
-/* PENGUJIAN */
-if(status.includes("uji")){
+else if(status.includes("uji")){
 progress="50%"
 s3+=" active"
 }
-
-/* PENERBITAN */
-if(status.includes("penerbitan") || status.includes("skhp")){
+else if(status.includes("penerbitan") || status.includes("skhp")){
 progress="75%"
 s4+=" active"
 }
-
-/* SELESAI */
-if(status.includes("selesai")){
+else if(status.includes("selesai")){
 progress="100%"
 s5+=" active"
 }
@@ -340,7 +326,7 @@ icon4="⚠"
 label4="Perlu Perbaikan"
 }
 
-return`
+return `
 
 <div class="tracking">
 
@@ -381,49 +367,14 @@ return`
 `
 }
 
-return`
-
-<div class="tracking">
-
-<div class="progress-line"></div>
-<div class="progress" style="width:calc(${progress} - 25px)"></div>
-
-<div class="steps">
-
-<div class="step">
-<div class="${s1}">${icon1}</div>
-<div class="label-step">Diterima</div>
-</div>
-
-<div class="step">
-<div class="${s2}">${icon2}</div>
-<div class="label-step">Sedang Dijadwalkan</div>
-</div>
-
-<div class="step">
-<div class="${s3}">${icon3}</div>
-<div class="label-step">Sedang Diuji</div>
-</div>
-
-<div class="step">
-<div class="${s4}">${icon4}</div>
-<div class="label-step">${label4}</div>
-</div>
-
-</div>
-
-</div>
-
-`
-}
-
 async function init(){
-
+try{
 const res=await fetch(sheetURL)
 const text=await res.text()
-
 sheetData=parseCSV(text)
-
+}catch(e){
+console.error("Gagal load data", e)
+}
 }
 
 function cekLayanan(){
@@ -431,24 +382,29 @@ function cekLayanan(){
 let val=document.getElementById("search").value.toLowerCase()
 let hasil=document.getElementById("hasil")
 
+if(!val){
+hasil.innerHTML="<b>Masukkan nomor layanan</b>"
+return
+}
+
 for(let i=1;i<sheetData.length;i++){
 
 let nomor=(sheetData[i][0]||"").toLowerCase()
 
 if(nomor.includes(val)){
 
-let status=sheetData[i][6]
+let status=sheetData[i][6] || "-"
 
 hasil.innerHTML=`
 
 <div class="row">
 <div class="label">Nomor Layanan</div>
-<div class="value">${sheetData[i][0]}</div>
+<div class="value">${sheetData[i][0] || "-"}</div>
 </div>
 
 <div class="row">
 <div class="label">Jenis Layanan</div>
-<div class="value">${sheetData[i][5]}</div>
+<div class="value">${sheetData[i][5] || "-"}</div>
 </div>
 
 <div class="row">
@@ -460,17 +416,17 @@ ${workflow(status)}
 
 <div class="row">
 <div class="label">Jadwal Pengujian</div>
-<div class="value">${sheetData[i][2]}</div>
+<div class="value">${sheetData[i][2] || "-"}</div>
 </div>
 
 <div class="row">
 <div class="label">Lokasi</div>
-<div class="value">${sheetData[i][4]}</div>
+<div class="value">${sheetData[i][4] || "-"}</div>
 </div>
 
 <div class="row">
 <div class="label">Keterangan</div>
-<div class="value">${sheetData[i][7]}</div>
+<div class="value">${sheetData[i][7] || "-"}</div>
 </div>
 
 `
