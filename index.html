@@ -163,7 +163,7 @@ font-weight:bold;
 /* COLORS */
 
 .diterima{
-background:#e6cff2;
+background:#00ffbc
 color:#000;
 }
 
@@ -182,6 +182,10 @@ background:#4cbb17;
 
 .perbaikan{
 background:#ff0800;
+}
+.penerbitan{
+background:#e6cff2;
+color:#000;
 }
 
 /* ANIMATION */
@@ -285,13 +289,13 @@ let progress="0%"
 let s1="circle diterima"
 let s2="circle jadwal"
 let s3="circle uji"
-let s4="circle jadwal"
+let s4="circle penerbitan"
 let s5="circle selesai"
 
 let icon1="📝"
 let icon2="🔍"
 let icon3="🧪"
-let icon4="📄"
+let icon4="⌨️"
 let icon5="✔"
 
 let label4="Penerbitan SKHP"
@@ -400,6 +404,11 @@ hasil.innerHTML=`
 <div class="row">
 <div class="label">Nomor Layanan</div>
 <div class="value">${sheetData[i][0] || "-"}</div>
+</div>
+
+<div class="row">
+<div class="label">Nama Pemilik</div>
+<div class="value">${sheetData[i][3] || "-"}</div>
 </div>
 
 <div class="row">
