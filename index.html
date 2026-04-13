@@ -226,10 +226,47 @@ let sheetData=[]
 
 const sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSabRsCKk4xRAHNzpX25t5Bs2JAA-w1l2sycvl4AIQaYTe7BFFwBjQTiyxReGp3jp10u1PAVHNEK2bu/pub?gid=1685468197&single=true&output=csv&t="+Date.now()
 
-function parseCSV(text){
-return text.split("\n").map(row => {
-return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-})
+/* PARSER CSV YANG SUPPORT ENTER DALAM CELL */
+function parseCSV(text) {
+const rows = [];
+let row = [];
+let current = "";
+let insideQuotes = false;
+
+for (let i = 0; i < text.length; i++) {
+let char = text[i];
+let next = text[i + 1];
+
+if (char === '"') {
+if (insideQuotes && next === '"') {
+current += '"';
+i++;
+} else {
+insideQuotes = !insideQuotes;
+}
+}
+else if (char === ',' && !insideQuotes) {
+row.push(current);
+current = "";
+}
+else if ((char === '\n' || char === '\r') && !insideQuotes) {
+if (current || row.length) {
+row.push(current);
+rows.push(row);
+row = [];
+current = "";
+}
+} else {
+current += char;
+}
+}
+
+if (current || row.length) {
+row.push(current);
+rows.push(row);
+}
+
+return rows;
 }
 
 document.getElementById("search").addEventListener("keypress",function(e){
@@ -242,6 +279,7 @@ const text=await res.text()
 sheetData=parseCSV(text)
 }
 
+/* WORKFLOW */
 function workflow(status){
 
 status=(status||"").toLowerCase()
@@ -314,9 +352,12 @@ return `
 async function cekLayanan(){
 
 let hasil=document.getElementById("hasil")
+
 let input=document.getElementById("search").value
 .replace(/"/g,"")
 .replace(/\r/g,"")
+.replace(/\n/g,"")
+.replace(/-/g,"")
 .trim()
 .toLowerCase()
 
@@ -336,12 +377,13 @@ for(let i=1;i<sheetData.length;i++){
 
 let nomor=(sheetData[i][0]||"")
 .replace(/"/g,"")
-.replace(/\r/g,"")  
+.replace(/\r/g,"")
+.replace(/\n/g,"")
+.replace(/-/g,"")
 .trim()
 .toLowerCase()
 
-/* EXACT MATCH (tidak case-sensitive) */
-if(nomor.replace(/-/g,"") === input.replace(/-/g,"")){
+if(nomor === input){
 
 let status=sheetData[i][6]||"-"
 
@@ -359,15 +401,11 @@ ${workflow(status)}
 <div class="row"><div class="label">Keterangan</div><div class="value">${sheetData[i][8]}</div></div>
 `
 
-document.getElementById("search").focus()
-document.getElementById("search").select()
-
 return
 }
 }
 
 hasil.innerHTML="<b>Nomor layanan tidak ditemukan</b>"
-document.getElementById("search").focus()
 }
 
 init()
